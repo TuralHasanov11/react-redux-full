@@ -1,7 +1,8 @@
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addPost, allPosts, createPost, fetchPosts, postsError, postsStatus, reactionAdded } from '../store/postsSlice'
+import { Link } from 'react-router-dom';
+import { addPost, allPosts, createPost, fetchPosts, postsError, postsStatus, reactionAdded, selectPostIds } from '../store/postsSlice'
 import { allUsers } from '../store/usersSlice';
 import PostAuthor from './PostAuthor';
 
@@ -60,6 +61,7 @@ export default function Posts() {
             <div key={'post'+post.id}>
             <h5>{post.title}</h5>
             <h6><PostAuthor userId={post.userId}/></h6>
+            <Link to={`posts/${post.id}`}>View Post</Link>
             <h6>{formatDistanceToNow(parseISO(post?.date)) + ' ago' ?? ''}</h6>
             {
                 Object.entries(reactionEmoji).map(([name, emoji]) => (<button

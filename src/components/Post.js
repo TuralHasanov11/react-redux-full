@@ -3,11 +3,13 @@ import { postSingle } from '../store/postsSlice'
 import { useSelector } from "react-redux";
 import PostAuthor from './PostAuthor';
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Post() {
 
-    const post = useSelector(state => postSingle(state))
+    const {postId} = useParams()
+
+    const post = useSelector(state => postSingle(state, Number(postId)))
     if (!post) {
         return (
             <section>
@@ -20,11 +22,11 @@ export default function Post() {
         <article>
             <h2>{post.title}</h2>
             <p>{post.body}</p>
-            <p className="postCredit">
-                <Link to={`/post/edit/${post.id}`}>Edit Post</Link>
+            <div className="postCredit">
+                <Link to={`/posts/${post.id}/edit`}>Edit Post</Link>
                 <PostAuthor userId={post.userId} />
                 <h6>{formatDistanceToNow(parseISO(post?.date)) + ' ago' ?? ''}</h6>
-            </p>
+            </div>
         </article>
     )
 }
